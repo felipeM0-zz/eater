@@ -1,0 +1,100 @@
+#main-content {
+  width: 100vw;
+  height: 100vh;
+}
+
+.box-superior {
+  max-width: 1366px;
+  margin: auto;
+}
+
+.box-superior aside {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 510px;
+  padding: 35px 55px 0 55px;
+}
+
+.box-superior aside .side-left {
+  width: 350px;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 3px;
+  height: 100%;
+}
+
+.box-superior aside .leaflet-container {
+  border-radius: 0 10px 10px 0;
+}
+
+.box-superior > footer {
+  padding: 20px 55px 0 55px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.box-superior > footer button {
+  height: 50px;
+  text-transform: none;
+  font: 700 15px Nunito;
+  color: var(--color-primary);
+  background-color: var(--color-primary-lighter);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  padding-right: 15px;
+  padding-left: 15px;
+  border-radius: 10px;
+}
+
+.box-superior > footer button:hover {
+  background-color: var(--color-more-primary);
+  color: var(--color-secundary);
+  border: 1px solid var(--color-secundary);
+}
+
+.box-superior > footer button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.box-superior > footer button:last-child {
+  background-color: var(--color-more-primary);
+  color: var(--color-secundary);
+}
+
+.box-superior > footer button p {
+  padding-top: 2px;
+}
+
+.side-left .middle-box h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.side-left .middle-box p {
+  font-size: 18px;
+}
+
+.side-left footer {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.side-left footer a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.side-left footer a {
+  color: var(--color-secundary);
+}
+
+.side-left footer a span {
+  padding-top: 2px;
+  margin-left: 3px;
+}

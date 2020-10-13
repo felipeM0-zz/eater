@@ -1,0 +1,24 @@
+:root {
+  --color-primary: #332e3c;
+  --color-more-primary: #1d1a22;
+  --color-primary-lighter: #8a7aa9;
+  --color-secundary: #d8d4f2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--color-secundary);
+  background-color: var(--color-primary);
+}
+
+body,
+input,
+button,
+textarea {
+  font-family: Nunito, sans-serif;
+}
