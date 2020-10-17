@@ -9,6 +9,7 @@ import YouTubeIcon from "@material-ui/icons/YouTube";
 import BusinessIcon from "@material-ui/icons/Business";
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import RestaurantIcon from "@material-ui/icons/Restaurant";
 
 import "leaflet/dist/leaflet.css";
 import "../styles/pages/main.css";
@@ -58,6 +59,11 @@ const Main = () => {
         </aside>
 
         <footer>
+          <Tooltip placement="top" title="Cadastrar-se">
+            <Button startIcon={<RestaurantIcon />}>
+              <p>Fazer parte</p>
+            </Button>
+          </Tooltip>
           <Tooltip placement="top" title="Sobre esta empresa">
             <Button startIcon={<BusinessIcon />}>
               <p>Sobre</p>
