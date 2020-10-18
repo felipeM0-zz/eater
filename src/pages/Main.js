@@ -1,5 +1,6 @@
 import React from "react";
 import { Map, TileLayer } from "react-leaflet";
+import { Link } from "react-router-dom";
 
 import logoImg from "../images/icon-eater-white.svg";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -47,37 +48,49 @@ const Main = () => {
           </div>
           <Map
             dragging={false}
+            touchZoom={false}
             zoomControl={false}
+            scrollWheelZoom={false}
+            doubleClickZoom={false}
             center={[-2.5214101, -44.2107223]}
             zoom={15}
             style={{ width: "100%", height: "100%" }}
           >
             <TileLayer
-              url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+              url=""
+              // url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
             />
           </Map>
         </aside>
 
         <footer>
           <Tooltip placement="top" title="Cadastrar-se">
-            <Button startIcon={<RestaurantIcon />}>
-              <p>Fazer parte</p>
-            </Button>
+            <Link to="/member">
+              <Button startIcon={<RestaurantIcon />}>
+                <p>Fazer parte</p>
+              </Button>
+            </Link>
           </Tooltip>
           <Tooltip placement="top" title="Sobre esta empresa">
-            <Button startIcon={<BusinessIcon />}>
-              <p>Sobre</p>
-            </Button>
+            <Link to="">
+              <Button startIcon={<BusinessIcon />}>
+                <p>Sobre</p>
+              </Button>
+            </Link>
           </Tooltip>
           <Tooltip placement="top" title="Entrar em contato">
-            <Button startIcon={<PermContactCalendarIcon />}>
-              <p>Contato</p>
-            </Button>
+            <Link to="">
+              <Button startIcon={<PermContactCalendarIcon />}>
+                <p>Contato</p>
+              </Button>
+            </Link>
           </Tooltip>
           <Tooltip placement="top" title="Ver cardápio disponível">
-            <Button startIcon={<MenuBookIcon />}>
-              <p>Cardápio</p>
-            </Button>
+            <Link to="">
+              <Button startIcon={<MenuBookIcon />}>
+                <p>Cardápio</p>
+              </Button>
+            </Link>
           </Tooltip>
         </footer>
       </div>

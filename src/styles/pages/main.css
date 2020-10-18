@@ -17,8 +17,8 @@
 }
 
 .box-superior aside .side-left {
-  width: 350px;
-  min-width: 350px;
+  max-width: 350px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,37 +35,37 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  min-width: 320px;
 }
 
-.box-superior > footer button {
+.box-superior > footer a button {
   height: 50px;
   text-transform: none;
   font: 700 15px Nunito;
-  color: var(--color-primary);
-  background-color: var(--color-primary-lighter);
+  color: var(--color-primary) !important;
+  background-color: var(--color-primary-lighter) !important;
   transition: all 0.2s;
   border: 1px solid transparent;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding: 0 15px;
   border-radius: 10px;
 }
 
-.box-superior > footer button:hover {
-  background-color: var(--color-more-primary);
-  color: var(--color-secundary);
+.box-superior > footer a:hover button {
+  background-color: var(--color-more-primary) !important;
+  color: var(--color-secundary) !important;
   border: 1px solid var(--color-secundary);
 }
 
-.box-superior > footer button:not(:last-child) {
+.box-superior > footer a:not(:last-child) {
   margin-right: 15px;
 }
 
-.box-superior > footer button:last-child {
-  background-color: var(--color-more-primary);
-  color: var(--color-secundary);
+.box-superior > footer a:last-child button {
+  background-color: var(--color-more-primary) !important;
+  color: var(--color-secundary) !important;
 }
 
-.box-superior > footer button p {
+.box-superior > footer a button p {
   padding-top: 2px;
 }
 
@@ -97,4 +97,65 @@
 .side-left footer a span {
   padding-top: 2px;
   margin-left: 3px;
+}
+.box-superior > footer a {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .box-superior aside {
+    display: block;
+    height: auto;
+    padding: 0;
+  }
+  .box-superior aside .side-left {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin: auto;
+  }
+  .box-superior aside .side-left > header > img {
+    width: 150px;
+    margin-bottom: 10px;
+  }
+  .side-left .middle-box h2 {
+    font-size: 30px;
+    line-height: 30px;
+  }
+  .side-left .middle-box p {
+    font-size: 15px;
+  }
+  .side-left footer {
+    margin-top: 20px;
+    padding: 0;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .side-left footer a {
+    font-size: 12px;
+  }
+  .box-superior aside .leaflet-container {
+    height: 300px !important;
+    margin-top: 0px;
+    border-radius: 0;
+    min-width: 320px !important;
+  }
+  .box-superior > footer {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 15px;
+  }
+  .box-superior > footer a button {
+    margin: 5px 5px !important;
+    width: 150px;
+  }
+  .box-superior > footer a:not(:last-child) {
+    margin: 0;
+  }
+}
+
+@media (max-width: 669px) {
+  .box-superior > footer a button {
+    width: 230px;
+  }
 }

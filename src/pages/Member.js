@@ -54,6 +54,27 @@ const Partner = () => {
               value={about}
             ></textarea>
           </div>
+          <div>
+            <div>
+              <span>
+                Descrição
+                {about.length > 0 && about.length <= 200 ? (
+                  <CheckIcon className="correct" />
+                ) : (
+                  <CloseIcon className="incorrect" />
+                )}
+              </span>
+              <span>
+                Máximo 200 caracteres {about.length <= 0 ? "" : " | " + about.length}
+              </span>
+            </div>
+            <textarea
+              placeholder="Fale sobre o estabelecimento"
+              onChange={(e) => setAbout(e.target.value)}
+              maxLength={200}
+              value={about}
+            ></textarea>
+          </div>
         </div>
       </div>
     </div>
