@@ -3,6 +3,8 @@
   --color-more-primary: #1d1a22;
   --color-primary-lighter: #8a7aa9;
   --color-secundary: #d8d4f2;
+  --color-correct: #8cc76b;
+  --color-incorrect: #f27474;
 }
 
 * {

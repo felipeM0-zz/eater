@@ -45,15 +45,17 @@
 .main-container .fields > div > div:first-child > span:nth-child(1) svg {
   position: absolute;
   font-size: 1.2rem;
-  margin-top: 1.5px;
-  margin-left: 0.1rem;
+  margin-top: 1px;
+  margin-left: 0.2rem;
+  border: 2px solid;
+  border-radius: 1rem;
 }
 .main-container .fields > div > div:first-child > span:nth-child(1) svg.correct {
-  color: rgb(84, 187, 84);
+  color: var(--color-correct);
 }
 
 .main-container .fields > div > div:first-child > span:nth-child(1) svg.incorrect {
-  color: rgb(160, 47, 39);
+  color: var(--color-incorrect);
 }
 
 .main-container .fields > div > div:first-child > span:nth-child(2) {
@@ -85,6 +87,11 @@
   color: rgba(51, 46, 60, 0.4);
 }
 
+.main-container .fields > div > input.error,
+.main-container .fields > div > textarea.error {
+  border: 2px solid var(--color-incorrect);
+}
+
 #member-content > form > button {
   margin-top: 3rem;
   width: 100%;
@@ -97,6 +104,13 @@
 
 #member-content > form > button p {
   font-size: 1.2rem;
+}
+
+.swal2-title,
+.swal2-content,
+.swal2-icon.swal2-info {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 @media (max-width: 425px) {
