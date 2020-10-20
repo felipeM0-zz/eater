@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MaskedInput from "react-maskedinput";
 import { Button } from "@material-ui/core";
 import * as EmailValidator from "email-validator";
+import { useHistory } from "react-router-dom";
 
 import { cpf, cnpj } from "cpf-cnpj-validator";
 import CpfCnpj from "@react-br-forms/cpf-cnpj-mask";
@@ -15,6 +16,8 @@ import SendIcon from "@material-ui/icons/Send";
 import "../styles/pages/member.css";
 
 const Partner = () => {
+  const history = useHistory();
+
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [type, setType] = useState("");
@@ -25,28 +28,94 @@ const Partner = () => {
   const [emailPropVal, setEmailPropVal] = useState("");
   const [emailProp, setEmailProp] = useState(false);
 
-  const [cpfCnpjLocal, setCpfCnpjLocal] = useState(false);
-  const [cpfCnpjLocalVal, setCpfCnpjLocalVal] = useState("");
+  const [ccLocal, setCcLocal] = useState(false);
+  const [ccLocalVal, setCcLocalVal] = useState("");
 
   const [cpfPropVal, setCpfPropVal] = useState("");
   const [cpfProp, setCpfProp] = useState(false);
 
+  const msgSwal = (title, text, icon, showConfirm, timer) => {
+    Swal.fire({
+      title: title,
+      html: text,
+      icon: icon,
+      showConfirmButton: showConfirm,
+      timer: timer,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     let inputs = Array.from(document.querySelectorAll("input, textarea"));
+
     for (let i = 0; i < inputs.length; i++) {
       if (inputs[i].classList.contains("error")) {
         inputs[i].focus();
-        Swal.fire({
-          title: "Aviso",
-          text: `${inputs[i].name} inválido(a)`,
-          icon: "error",
-          showConfirmButton: false,
-          timer: 3000,
-        });
+        msgSwal("Aviso", `${inputs[i].name} inválido(a)`, "error", false, 3000);
         return;
       }
     }
+
+    let checks = [
+      checkName(),
+      checkDesc(),
+      checkType(),
+      checkCelLocal(),
+      checkTel(),
+      checkCCLocal(),
+      checkNameProp(),
+      checkCelProp(),
+      checkCProp(),
+      checkEmail(),
+    ];
+
+    for (let i = 0; i < checks.length; i++) {
+      if (!checks[i]) {
+        msgSwal("Aviso", `Ainda há campos inválidos`, "error", false, 3000);
+        return;
+      }
+    }
+
+    Swal.fire({
+      title: "Confirmação",
+      html: `Dados enviados para a análise, você receberá mais informações no email: <strong>${emailPropVal}</strong>`,
+      icon: "success",
+      confirmButtonColor: "#332e3c",
+    }).then(() => {
+      history.push("/");
+    });
+  };
+
+  const checkName = () => {
+    return name.trim().indexOf(" ") > 0;
+  };
+  const checkDesc = () => {
+    return about.length > 0 && about.length <= 200;
+  };
+  const checkType = () => {
+    return type.length > 0;
+  };
+  const checkCelLocal = () => {
+    return cel.length > 10;
+  };
+  const checkTel = () => {
+    return tel.length > 7 || tel.length === 0;
+  };
+  const checkCCLocal = () => {
+    return (ccLocalVal.length === 11 || ccLocalVal.length === 14) && ccLocal;
+  };
+  const checkNameProp = () => {
+    return nameProp.trim().indexOf(" ") > 0;
+  };
+  const checkCelProp = () => {
+    return celProp.length > 10;
+  };
+  const checkCProp = () => {
+    return cpfPropVal.length > 10;
+  };
+  const checkEmail = () => {
+    return emailProp;
   };
 
   return (
@@ -59,7 +128,7 @@ const Partner = () => {
             <div>
               <span>
                 *Nome{" "}
-                {name.trim().indexOf(" ") > 0 ? (
+                {checkName() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -68,13 +137,13 @@ const Partner = () => {
               <span>Minímo 2 nomes</span>
             </div>
             <input
-              name="Nome do local"
-              className={`${name.trim().indexOf(" ") <= 0 ? "error" : ""}`}
-              // required
-              placeholder="Nome do local"
+              required
               type="text"
               value={name}
+              name="Nome do local"
+              placeholder="Nome do local"
               onChange={(e) => setName(e.target.value)}
+              className={`${checkName() ? "" : "error"}`}
             />
           </div>
           {/* DESCRIÇÃO DO LOCAL */}
@@ -82,7 +151,7 @@ const Partner = () => {
             <div>
               <span>
                 *Descrição
-                {about.length > 0 && about.length <= 200 ? (
+                {checkDesc() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -93,21 +162,22 @@ const Partner = () => {
               </span>
             </div>
             <textarea
-              name="Descrição do local"
-              className={`${about.length > 0 && about.length <= 200 ? "" : "error"}`}
-              // required
-              placeholder="Fale sobre o local"
-              onChange={(e) => setAbout(e.target.value)}
-              maxLength={200}
+              required
+              type="text"
               value={about}
+              maxLength={200}
+              name="Descrição do local"
+              placeholder="Fale sobre o local, ambiente, etc"
+              onChange={(e) => setAbout(e.target.value)}
+              className={`${checkDesc() ? "" : "error"}`}
             ></textarea>
           </div>
-          {/* PRIINCIPAL VENDA */}
+          {/* PRINCIPAL VENDA */}
           <div>
             <div>
               <span>
                 *Principal venda
-                {type.length > 0 ? (
+                {checkType() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -116,13 +186,13 @@ const Partner = () => {
               <span>Ex: Pizzas</span>
             </div>
             <input
-              name="Principal comida do local"
-              className={`${type.length > 0 ? "" : "error"}`}
-              // required
-              placeholder="Principal tipo de venda"
+              required
               type="text"
               value={type}
+              name="Principal comida do local"
+              placeholder="Principal tipo de venda"
               onChange={(e) => setType(e.target.value)}
+              className={`${checkType() ? "" : "error"}`}
             />
           </div>
           {/* CELULAR DO LOCAL */}
@@ -130,7 +200,7 @@ const Partner = () => {
             <div>
               <span>
                 *Celular
-                {cel.length > 10 ? (
+                {checkCelLocal() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -139,15 +209,15 @@ const Partner = () => {
               <span>Preferência WhatsApp</span>
             </div>
             <MaskedInput
-              name="Celular do local"
-              className={`${cel.length <= 10 ? "error" : ""}`}
-              // required
-              type="cel"
-              placeholderChar=" "
+              required
+              type="tel"
               value={cel}
-              onChange={(e) => setCel(e.target.value.replace(/[^0-9]/g, ""))}
+              placeholderChar=" "
+              name="Celular do local"
               mask="(11) 1 1111-1111"
               placeholder="Celular do local"
+              className={`${checkCelLocal() ? "" : "error"}`}
+              onChange={(e) => setCel(e.target.value.replace(/[^0-9]/g, ""))}
             />
           </div>
           {/* TELEFONE DO LOCAL */}
@@ -155,22 +225,22 @@ const Partner = () => {
             <div>
               <span>
                 Telefone
-                {tel.length > 7 && <CheckIcon className="correct" />}
                 {tel.length >= 1 && tel.length <= 7 && (
                   <CloseIcon className="incorrect" />
                 )}
+                {checkTel() && <CheckIcon className="correct" />}
               </span>
               <span>Fixo</span>
             </div>
             <MaskedInput
-              name="Telefone do local"
-              className={`${tel.length >= 1 && tel.length <= 7 ? "error" : ""}`}
               type="tel"
-              placeholderChar=" "
               value={tel}
-              onChange={(e) => setTel(e.target.value.replace(/[^0-9]/g, ""))}
               mask="1111-1111"
+              placeholderChar=" "
+              name="Telefone do local"
               placeholder="Telefone do local"
+              className={`${checkTel() ? "" : "error"}`}
+              onChange={(e) => setTel(e.target.value.replace(/[^0-9]/g, ""))}
             />
           </div>
           {/* CPF OU CNPJ DO LOCAL */}
@@ -178,8 +248,7 @@ const Partner = () => {
             <div>
               <span>
                 *CPF ou CNPJ
-                {(cpfCnpjLocalVal.length === 11 || cpfCnpjLocalVal.length === 14) &&
-                cpfCnpjLocal ? (
+                {checkCCLocal() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -187,26 +256,23 @@ const Partner = () => {
               </span>
             </div>
             <CpfCnpj
+              required
+              type="text"
+              value={ccLocalVal}
               name="CPF ou CNPJ do local"
-              value={cpfCnpjLocalVal}
               placeholder="CPF ou CNPJ do local"
+              className={`${checkCCLocal() ? "" : "error"}`}
               onChange={(e) => {
                 let val = e.target.value.replace(/[^0-9]/g, "");
-                setCpfCnpjLocal(
+                setCcLocalVal(val);
+                setCcLocal(
                   val.length === 11
                     ? cpf.isValid(val)
                     : val.length === 14
                     ? cnpj.isValid(val)
                     : false
                 );
-                setCpfCnpjLocalVal(val);
               }}
-              className={`${
-                (cpfCnpjLocalVal.length === 11 || cpfCnpjLocalVal.length === 14) &&
-                cpfCnpjLocal
-                  ? ""
-                  : "error"
-              }`}
             />
           </div>
         </div>
@@ -217,7 +283,7 @@ const Partner = () => {
             <div>
               <span>
                 *Nome
-                {nameProp.trim().indexOf(" ") > 0 ? (
+                {checkNameProp() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -226,13 +292,13 @@ const Partner = () => {
               <span>Minímo 2 nomes</span>
             </div>
             <input
-              name="Nome do proprietário"
-              className={`${nameProp.trim().indexOf(" ") <= 0 ? "error" : ""}`}
-              // required
-              placeholder="Nome do proprietário"
+              required
               type="text"
               value={nameProp}
+              name="Nome do proprietário"
+              placeholder="Nome do proprietário"
               onChange={(e) => setNameProp(e.target.value)}
+              className={`${checkNameProp() ? "" : "error"}`}
             />
           </div>
           {/* CELULAR DO PROPRIETÁRIO */}
@@ -240,7 +306,7 @@ const Partner = () => {
             <div>
               <span>
                 *Celular
-                {celProp.length > 10 ? (
+                {checkCelProp() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -249,14 +315,15 @@ const Partner = () => {
               <span>Preferência WhatsApp</span>
             </div>
             <MaskedInput
-              name="Celular do proprietário"
-              className={`${celProp.length > 10 ? "" : "error"}`}
-              // required
-              placeholderChar=" "
+              required
+              type="tel"
               value={celProp}
-              onChange={(e) => setCelProp(e.target.value.replace(/[^0-9]/g, ""))}
+              placeholderChar=" "
               mask="(11) 1 1111-1111"
+              name="Celular do proprietário"
               placeholder="Celular do local"
+              className={`${checkCelProp() ? "" : "error"}`}
+              onChange={(e) => setCelProp(e.target.value.replace(/[^0-9]/g, ""))}
             />
           </div>
           {/* CPF DO PROPRIETÁRIO */}
@@ -264,7 +331,7 @@ const Partner = () => {
             <div>
               <span>
                 *CPF
-                {cpfPropVal.length > 10 && cpfProp ? (
+                {checkCProp() && cpfProp ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -272,18 +339,19 @@ const Partner = () => {
               </span>
             </div>
             <MaskedInput
-              name="CPF do proprietário"
-              className={`${cpfPropVal.length > 10 && cpfProp ? "" : "error"}`}
-              // required
-              placeholderChar=" "
+              required
+              type="text"
               value={cpfPropVal}
+              placeholderChar=" "
+              mask="111.111.111-11"
+              name="CPF do proprietário"
+              placeholder="CPF do proprietário"
+              className={`${checkCProp() && cpfProp ? "" : "error"}`}
               onChange={(e) => {
                 let val = e.target.value.replace(/[^0-9]/g, "");
                 setCpfProp(cpf.isValid(val));
                 setCpfPropVal(val);
               }}
-              mask="111.111.111-11"
-              placeholder="CPF do proprietário"
             />
           </div>
           {/* EMAIL DO PROPRIETÁRIO */}
@@ -291,7 +359,7 @@ const Partner = () => {
             <div>
               <span>
                 *Email
-                {emailProp ? (
+                {checkEmail() ? (
                   <CheckIcon className="correct" />
                 ) : (
                   <CloseIcon className="incorrect" />
@@ -299,16 +367,17 @@ const Partner = () => {
               </span>
             </div>
             <input
-              name="Email do proprietário"
-              className={`${emailProp ? "" : "error"}`}
+              required
               type="email"
               value={emailPropVal}
+              name="Email do proprietário"
+              placeholder="Email pessoal"
+              className={`${checkEmail() ? "" : "error"}`}
               onChange={(e) => {
                 let email = e.target.value;
                 setEmailPropVal(email);
                 setEmailProp(EmailValidator.validate(email));
               }}
-              placeholder="Email pessoal"
             />
           </div>
         </div>
